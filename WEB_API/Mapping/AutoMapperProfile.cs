@@ -19,6 +19,10 @@ namespace WEB_API.Mapping
             CreateMap<BLGenre, Genre>();
             CreateMap<Genre, BLGenre>();
             CreateMap<BLGenre, Genre>().ForMember(dest => dest.Id, opt => opt.Ignore()); // ignore the Id property when mapping 
+
+            CreateMap<BLUser, User>();
+            CreateMap<User, BLUser>();
+            CreateMap<BLUser, User>().ForMember(dest => dest.Id, opt => opt.Ignore()); // ignore the Id property when mapping
         }
     }
 }
