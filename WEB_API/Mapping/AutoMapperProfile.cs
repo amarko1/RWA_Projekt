@@ -23,6 +23,10 @@ namespace WEB_API.Mapping
             CreateMap<BLUser, User>();
             CreateMap<User, BLUser>();
             CreateMap<BLUser, User>().ForMember(dest => dest.Id, opt => opt.Ignore()); // ignore the Id property when mapping
+
+            CreateMap<BLNotification, Notification>();
+            CreateMap<Notification, BLNotification>();
+            CreateMap<BLNotification, Notification>().ForMember(dest => dest.Id, opt => opt.Ignore()); // ignore the Id property when mapping
         }
     }
 }
