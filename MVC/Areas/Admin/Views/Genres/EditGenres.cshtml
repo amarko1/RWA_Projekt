@@ -1,0 +1,22 @@
+﻿<form method="post">
+    <input asp-for="Id" hidden/>
+    <div class="mt-4">
+        <div class="row mb-2">
+            <h2 class="text-primary">Edit genres</h2>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-6">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control border border-1 border-dark" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3 col-6">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control border border-1 border-dark" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-dark" style="width:150px">Update</button>
+        <a asp-area="Admin" asp-controller="Genre" asp-action="AllGenres" class="btn btn-light" style="width:150px">Back</a>
+    </div>
+</form>
