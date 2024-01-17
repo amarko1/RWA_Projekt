@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DATA_LAYER.BLModels;
 using DATA_LAYER.DALModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,13 @@ namespace DATA_LAYER.Repositories
     {
         private readonly RwaMoviesContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<TagRepository> _logger;
 
-        public TagRepository(RwaMoviesContext dbContext, IMapper mapper)
+        public TagRepository(RwaMoviesContext dbContext, IMapper mapper, ILogger<TagRepository> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public IEnumerable<BLTag> GetAll()
