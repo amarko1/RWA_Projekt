@@ -26,6 +26,7 @@ namespace MVC_LAYER.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateTag(BLTag blTag)
         {
             try
@@ -87,7 +88,34 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        [HttpDelete]
+        //nalodaj view s odabranim tagom
+        public IActionResult DeleteTag(int id, BLTag tag) //fix
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return NotFound();
+                }
+
+                var tagForDelete = _tagRepository.Get(id);
+
+                if (tagForDelete == null)
+                {
+                    return NotFound();
+                }
+
+                return View(tagForDelete);
+            }
+            catch
+            {
+                return RedirectToAction("AllTags");
+            }
+        }
+
+        //obrisi ga
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteTag(int id)
         {
             try
@@ -99,13 +127,13 @@ namespace MVC_LAYER.Controllers
                 if (deletedTag == null)
                     return Json(new { success = false, message = "Unable to delete tag" });
 
-                return Json(new { success = true, message = "Tag deleted successfully" });
+                return RedirectToAction("AllTags");
             }
             catch
             {
                 return RedirectToAction("AllTags");
             }
         }
-
     }
 }
+
