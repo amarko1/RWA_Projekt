@@ -26,6 +26,7 @@ namespace MVC_LAYER.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateGenre(BLGenre blGenre)
         {
             try
@@ -87,7 +88,34 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        [HttpDelete]
+        //nalodaj view s odabranim genreom
+        public IActionResult DeleteGenre(int id, BLGenre genre) //fix
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return NotFound();
+                }
+
+                var genreForDelete = _genreRepository.Get(id);
+
+                if (genreForDelete == null)
+                {
+                    return NotFound();
+                }
+
+                return View(genreForDelete);
+            }
+            catch
+            {
+                return RedirectToAction("AllGenres");
+            }
+        }
+
+        //obrisi ga
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteGenre(int id)
         {
             try
@@ -99,7 +127,7 @@ namespace MVC_LAYER.Controllers
                 if (deletedGenre == null)
                     return Json(new { success = false, message = "Unable to delete genre" });
 
-                return Json(new { success = true, message = "Genre deleted successfully" });
+                return RedirectToAction("AllGenres");
             }
             catch
             {
