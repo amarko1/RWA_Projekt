@@ -16,6 +16,8 @@ builder.Services.AddDbContext<RwaMoviesContext>(options => {
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IVideoRepository, VideoRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapProfile));
 
 var app = builder.Build();
@@ -37,6 +39,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Genre}/{action=AllGenres}/{id?}");
+    pattern: "{controller=Video}/{action=Search}/{id?}");
 
 app.Run();

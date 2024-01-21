@@ -17,5 +17,6 @@ namespace DATA_LAYER.BLModels
         public bool IsConfirmed { get; set; }
         public string SecurityToken { get; set; }
         public string Role { get; set; }
+        public int CountryOfResidenceId { get; set; }
     }
 }

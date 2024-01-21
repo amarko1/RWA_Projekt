@@ -1,0 +1,76 @@
+﻿@model IEnumerable<DATA_LAYER.BLModels.BLCountry>
+
+@{
+    var dataPage = ViewBag.DataPage;
+    var dataSize = ViewBag.DataSize;
+    var dataSizes = ViewBag.DataSizes;
+    var totalPages = ViewBag.TotalPages;
+}
+
+<h1>Search</h1>
+
+<form asp-controller="Country" asp-action="SearchCountry" method="get">
+    
+    <div class="form-group col-6">
+        <label class="control-label">Search</label>
+        <input class="form-control" type="search" name="searchText" value="@ViewBag.SearchText"/>
+        </select>
+    </div>
+
+    <div class="form-group col-6">
+        <label class="control-label">Page size</label>
+        <select class="form-control" asp-for="@dataSize" asp-items="@dataSizes">
+            <option value=""> ---Please choose page size--- </option>
+        </select>
+    </div>
+
+    <div class="form-group col-6">
+        <div class="form-group col-6">
+            <label class="control-label">Page index:</label>
+            <input type="search" asp-for="@dataPage" placeholder="page index" class="form-control" />
+        </div>
+    </div>
+
+    <div class="btn-toolbar">
+      <div class="btn-group mt-3">
+          @for(int i=0; i <= totalPages; i++)
+            {
+                var btnClass = (i != dataPage) ? "btn-outline-primary" : "btn-primary";
+                <a asp-action="SearchCountry" asp-route-dataPage="@i" asp-route-dataSize="@dataSize" class="btn @btnClass">@(i + 1)</a>
+            }
+      </div>
+    </div>
+
+
+    <div class="btn-group mt-3">
+        <button type="submit" class="btn btn-primary" value="true" name="search">Search</button>
+    </div>
+
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

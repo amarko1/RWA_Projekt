@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DATA_LAYER.BLModels;
 using DATA_LAYER.DALModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace DATA_LAYER.Repositories
         BLVideo Add(BLVideo value);
         BLVideo Modify(int id, BLVideo value);
         BLVideo Remove(int id);
+        (IEnumerable<BLVideo>, int) SearchVideos(string searchText, int? page, int? size);
+        int CountVideos();
     }
 
     public class VideoRepository : IVideoRepository
@@ -31,7 +34,7 @@ namespace DATA_LAYER.Repositories
 
         public IEnumerable<BLVideo> GetAll()
         {
-            var dbVideos = _dbContext.Videos;
+            var dbVideos = _dbContext.Videos.Include(v => v.Genre);
 
             var blVideos = _mapper.Map<IEnumerable<BLVideo>>(dbVideos);
 
@@ -40,7 +43,7 @@ namespace DATA_LAYER.Repositories
 
         public BLVideo Get(int id)
         {
-            var dbVideos = _dbContext.Videos;
+            var dbVideos = _dbContext.Videos.Include(v => v.Genre);
 
             var blVideos = _mapper.Map<IEnumerable<BLVideo>>(dbVideos);
 
@@ -96,5 +99,29 @@ namespace DATA_LAYER.Repositories
 
             return blVideo;
         }
+
+        public (IEnumerable<BLVideo>, int) SearchVideos(string searchText, int? page, int? size)
+        {
+            var videos = _dbContext.Videos
+                .Include("Genre");
+
+            if (searchText != null)
+            {
+                videos = videos.Where(x => x.Name.Contains(searchText));
+            }
+
+            var unpagedCount = videos.Count();
+
+            if (page != null && size != null)
+            {
+                videos = videos.Skip(page.Value * size.Value).Take(size.Value);
+            }
+
+            return (_mapper.Map<IEnumerable<BLVideo>>(videos), unpagedCount);
+        }
+
+        public int CountVideos() 
+           => _dbContext.Videos.Count();
+        
     }
 }

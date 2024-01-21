@@ -17,6 +17,8 @@ namespace DATA_LAYER.BLModels
 
         public int GenreId { get; set; }
 
+        //public string GenreName { get; set; }
+
         public int TotalSeconds { get; set; }
 
         public string? StreamingUrl { get; set; }
