@@ -22,6 +22,7 @@ namespace DATA_LAYER.Repositories
         void ValidateEmail(ValidateEmailRequest request);
         Tokens JwtTokens(JwtTokensRequest request);
         void ChangePassword(ChangePasswordRequest request);
+        bool Authenticate(string username, string password);
     }
 
     public class UserRepository : IUserRepository
@@ -66,11 +67,8 @@ namespace DATA_LAYER.Repositories
             {
                 Username = request.Username,
                 Email = request.Email,
-                Phone = request.Phone,
                 IsConfirmed = false,
-                SecurityToken = b64SecToken,
-                PwdSalt = b64Salt,
-                PwdHash = b64Hash
+                SecurityToken = b64SecToken
             };
 
             var dbUser = _mapper.Map<User>(newUser);
@@ -93,7 +91,7 @@ namespace DATA_LAYER.Repositories
             _dbContext.SaveChanges();
         }
 
-        private bool Authenticate(string username, string password)
+        public bool Authenticate(string username, string password)
         {
             var target = _dbContext.Users.Single(x => x.Username == username);
 

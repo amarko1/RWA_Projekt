@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DATA_LAYER.BLModels;
 using DATA_LAYER.DALModels;
+using MVC_LAYER.Models;
 
 namespace MVC_LAYER.Automapper
 {
@@ -28,6 +29,11 @@ namespace MVC_LAYER.Automapper
 
             CreateMap<Country, BLCountry>()
                 .ReverseMap();
+
+            CreateMap<User, BLUser>()
+                .ReverseMap();
+
+            CreateMap<BLUser, VMUser>();
         }
     }
 }
