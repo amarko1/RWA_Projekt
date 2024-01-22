@@ -45,15 +45,21 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="SearchCountry">Country</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="CardView">Card View</a>
                         </li>
                         @if (username != null)
                         {
                             <li class="nav-item">
                                 <form asp-controller="User" asp-action="Logout" class="d-inline"><button type="submit" class="btn btn-outline-primary">Logout @username</button></form>
+                            </li>
+                        }
+                        else 
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                             </li>
                         }
                     </ul>

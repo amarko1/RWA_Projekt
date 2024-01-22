@@ -85,7 +85,7 @@ namespace DATA_LAYER.Repositories
         {
             var dbUser = _dbContext.Users.FirstOrDefault(x =>
                 x.Username == username &&
-                x.IsConfirmed == true);
+                x.IsConfirmed == false);
 
             var salt = Convert.FromBase64String(dbUser.PwdSalt);
             var b64Hash = CreateHash(password, salt);

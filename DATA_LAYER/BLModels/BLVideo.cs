@@ -23,6 +23,6 @@ namespace DATA_LAYER.BLModels
 
         public string? StreamingUrl { get; set; }
 
-        //public int? imageid { get; set; }
+        public int? imageid { get; set; }
     }
 }

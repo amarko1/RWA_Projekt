@@ -49,6 +49,30 @@ namespace MVC_LAYER.Controllers
             return View(allVideos);
         }
 
+        public IActionResult CardView(string searchText, bool search)
+        {
+            var cookiesSearchText = Request.Cookies["searchText"];
+
+            if (search == false && string.IsNullOrEmpty(searchText))
+            {
+                searchText = cookiesSearchText;
+            }
+            else if (search == true && searchText != null)
+            {
+                Response.Cookies.Append("searchText", searchText);
+            }
+            else if (search == true && searchText == null)
+            {
+                Response.Cookies.Delete("searchText");
+            }
+
+            ViewBag.SearchTextCardView = searchText;
+
+            var allVideos = _videoRepository.SearchCardView(searchText);
+
+            return View(allVideos);
+        }
+
         private List<SelectListItem> GetSizes() =>
             new List<SelectListItem>
             {
@@ -82,7 +106,7 @@ namespace MVC_LAYER.Controllers
             {
                 Text = p.Name,
                 Value = p.Id.ToString()
-            });
+            }).OrderBy(p => p.Text);
 
             ViewBag.GenreSelectList = new SelectList(selectListItems, "Value", "Text");
         }

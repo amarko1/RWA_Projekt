@@ -33,7 +33,6 @@ namespace MVC_LAYER.Controllers
 
             ViewBag.SearchText = searchText;
 
-
             ViewBag.DataPage = dataPage;
             ViewBag.DataSize = dataSize;
             ViewBag.DataSizes = GetSizes();

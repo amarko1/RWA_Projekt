@@ -18,6 +18,7 @@ namespace DATA_LAYER.Repositories
         BLVideo Modify(int id, BLVideo value);
         BLVideo Remove(int id);
         (IEnumerable<BLVideo>, int) SearchVideos(string searchText, int? page, int? size);
+        IEnumerable<BLVideo> SearchCardView(string searchText);
         int CountVideos();
     }
 
@@ -122,6 +123,19 @@ namespace DATA_LAYER.Repositories
 
         public int CountVideos() 
            => _dbContext.Videos.Count();
-        
+
+
+        public IEnumerable<BLVideo> SearchCardView(string searchText)
+        {
+            var videos = _dbContext.Videos
+                .Include("Genre");
+
+            if (searchText != null)
+            {
+                videos = videos.Where(x => x.Name.Contains(searchText));
+            }
+
+            return _mapper.Map<IEnumerable<BLVideo>>(videos);
+        }
     }
 }

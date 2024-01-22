@@ -41,7 +41,7 @@ namespace MVC_LAYER.Controllers
             {
                 Text = p.Name,
                 Value = p.Id.ToString()
-            });
+            }).OrderBy(p => p.Text);
 
             ViewBag.CountrySelectList = new SelectList(selectListItems, "Value", "Text");
         }
@@ -67,7 +67,7 @@ namespace MVC_LAYER.Controllers
                 register.Password,
                 register.CountryOfResidenceId);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
 
         public IActionResult ValidateEmail(VMValidateEmail validateEmail)
