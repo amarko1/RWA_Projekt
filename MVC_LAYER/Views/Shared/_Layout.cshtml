@@ -19,47 +19,53 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVC_LAYER</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Video" asp-action="CardView">Video manager</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="AllTags">Tag</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Genre" asp-action="AllGenres">Genre</a>
-                        </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="AllVideos">Video</a>
-                        </li>*@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="Search">Video</a>
-                        </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="AllCountries">Country</a>
-                        </li>*@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="SearchCountry">Country</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="CardView">Card View</a>
-                        </li>
-                        @if (username != null)
+                        @if(username == "admin@gmail.com")
                         {
                             <li class="nav-item">
-                                <form asp-controller="User" asp-action="Logout" class="d-inline"><button type="submit" class="btn btn-outline-primary">Logout @username</button></form>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="AllTags">Tag</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Genre" asp-action="AllGenres">Genre</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="Search">Video</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="SearchCountry">Country</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="CardView">Card View</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="CardView">Home</a>
+                            </li>
+                        }
+
+                        @if (username != null)
+                        {
+                            <li class="nav-item ms-auto">
+                                <form asp-controller="User" asp-action="Logout" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-primary">Logout @username</button>
+                                </form>
                             </li>
                         }
                         else 
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            <li class="nav-item ms-auto">
+                               <b><a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a></b> 
                             </li>
                         }
                     </ul>
@@ -75,7 +81,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - MVC_LAYER - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Video manager 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

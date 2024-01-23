@@ -111,7 +111,7 @@ namespace MVC_LAYER.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 new AuthenticationProperties()).Wait();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CardView", "Video");
         }
 
         [HttpPost]
@@ -119,7 +119,7 @@ namespace MVC_LAYER.Controllers
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CardView", "Video");
         }
 
         public IActionResult ChangePassword()
@@ -135,7 +135,7 @@ namespace MVC_LAYER.Controllers
                 changePassword.Username,
                 changePassword.NewPassword);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CardView", "Video");
         }
     }
 }

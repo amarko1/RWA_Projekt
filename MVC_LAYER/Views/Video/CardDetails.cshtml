@@ -1,0 +1,35 @@
+﻿@model DATA_LAYER.BLModels.BLVideo
+
+<div class="container mt-3">
+    <h2>Video Details</h2>
+
+    <dl class="row">
+        <dt class="col-sm-2">Name:</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">Description:</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+
+        <dt class="col-sm-2">Genre:</dt>
+        <dd class="col-sm-10">@Model.GenreName</dd>
+
+        <dt class="col-sm-2">Total Seconds:</dt>
+        <dd class="col-sm-10">@Model.TotalSeconds</dd>
+
+        <dt class="col-sm-2">Streaming URL:</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.StreamingUrl))
+            {
+                <a href="@Model.StreamingUrl" target="_blank" class="btn btn-success">Watch Now</a>
+            }
+            else
+            {
+                <span>No streaming URL available</span>
+            }
+        </dd>
+    </dl>
+
+    <div class="mt-3">
+        <a asp-action="CardView" class="btn btn-primary">Back to List</a>
+    </div>
+</div>

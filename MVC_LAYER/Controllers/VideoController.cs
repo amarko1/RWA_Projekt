@@ -73,6 +73,30 @@ namespace MVC_LAYER.Controllers
             return View(allVideos);
         }
 
+        public IActionResult CardDetails(int id)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return NotFound();
+                }
+
+                var videoForView = _videoRepository.Get(id);
+
+                if (videoForView == null)
+                {
+                    return NotFound();
+                }
+
+                return View(videoForView);
+            }
+            catch
+            {
+                return RedirectToAction("CardView");
+            }
+        }
+
         private List<SelectListItem> GetSizes() =>
             new List<SelectListItem>
             {

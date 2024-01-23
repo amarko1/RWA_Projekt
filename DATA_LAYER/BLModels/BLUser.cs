@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,7 @@ namespace DATA_LAYER.BLModels
 
         public string? SecurityToken { get; set; }
 
+        //[ValidateNever]
         //public string Role { get; set; }
 
         public int CountryOfResidenceId { get; set; }

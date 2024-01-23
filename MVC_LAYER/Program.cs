@@ -50,6 +50,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Video}/{action=Search}/{id?}");
+    pattern: "{controller=Video}/{action=CardView}/{id?}");
 
 app.Run();

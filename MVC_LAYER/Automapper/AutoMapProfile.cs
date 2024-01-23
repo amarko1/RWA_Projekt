@@ -23,9 +23,8 @@ namespace MVC_LAYER.Automapper
             //CreateMap<Video, BLVideo>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => src.Genre.Name)); 
 
             CreateMap<Video, BLVideo>()
-                //.ForMember(dest => dest.GenreName, opt => opt.Ignore())
-                //.ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Genre.Name))
-                .ReverseMap();
+                .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Genre.Name));
+            CreateMap<BLVideo, Video>();
 
             CreateMap<Country, BLCountry>()
                 .ReverseMap();

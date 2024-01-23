@@ -35,7 +35,7 @@ namespace DATA_LAYER.Repositories
 
         public IEnumerable<BLVideo> GetAll()
         {
-            var dbVideos = _dbContext.Videos.Include(v => v.Genre);
+            var dbVideos = _dbContext.Videos.Include("Genre");
 
             var blVideos = _mapper.Map<IEnumerable<BLVideo>>(dbVideos);
 
@@ -44,7 +44,7 @@ namespace DATA_LAYER.Repositories
 
         public BLVideo Get(int id)
         {
-            var dbVideos = _dbContext.Videos.Include(v => v.Genre);
+            var dbVideos = _dbContext.Videos.Include("Genre");
 
             var blVideos = _mapper.Map<IEnumerable<BLVideo>>(dbVideos);
 
@@ -106,9 +106,14 @@ namespace DATA_LAYER.Repositories
             var videos = _dbContext.Videos
                 .Include("Genre");
 
+
             if (searchText != null)
             {
-                videos = videos.Where(x => x.Name.Contains(searchText));
+                searchText = searchText.ToLower();
+
+                videos = videos.Where(x =>
+                    x.Name.ToLower().Contains(searchText) ||
+                    x.Genre.Name.ToLower().Contains(searchText));
             }
 
             var unpagedCount = videos.Count();
