@@ -19,6 +19,7 @@ namespace DATA_LAYER.Repositories
         void ConfirmEmail(string email, string securityToken);
         BLUser GetConfirmedUser(string username, string password);
         void ChangePassword(string username, string newPassword);
+        BLUser Get(string username);
     }
 
     public class UserRepo : IUserRepo
@@ -79,6 +80,20 @@ namespace DATA_LAYER.Repositories
             userToConfirm.IsConfirmed = true;
 
             _dbContext.SaveChanges();
+        }
+
+        public BLUser Get(string username)
+        {
+            var dbUser = _dbContext.Users.FirstOrDefault(u => u.Username == username);
+
+            if (dbUser == null)
+            {
+                return null;
+            }
+
+            var blUser = _mapper.Map<BLUser>(dbUser);
+
+            return blUser;
         }
 
         public BLUser GetConfirmedUser(string username, string password)

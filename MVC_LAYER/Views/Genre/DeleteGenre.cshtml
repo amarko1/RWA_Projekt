@@ -11,28 +11,54 @@
     <h4>Genre</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
-    
-    <form asp-action="DeleteGenre">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+
+    <form id="deleteGenreForm" asp-action="DeleteGenre" method="post">
+        <button type="button" id="deleteGenreBtn" class="btn btn-danger">Delete</button> |
         <a asp-action="AllGenres" class="btn btn-primary">Back to List</a>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#deleteGenreBtn").click(function () {
+                $.ajax({
+                    url: "@Url.Action("DeleteGenre", "Genre")",
+                    type: "DELETE",
+                    data: { id: @Model.Id },
+                    contentType: "application/x-www-form-urlencoded",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.href = "/Genre/AllGenres";
+                        } else {
+                            alert("Failed to delete genre.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                    }
+                });
+            });
+        });
+    </script>
+}

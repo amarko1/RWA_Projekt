@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditGenre">
+        <form id="editGenreForm" asp-action="EditGenre">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -28,7 +28,7 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="button" id="editGenreBtn" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
@@ -40,4 +40,27 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $("#editGenreBtn").click(function () {
+                $.ajax({
+                    url: "/Genre/EditGenre", 
+                    type: "POST",
+                    data: $("#editGenreForm").serialize(),
+                    contentType: "application/x-www-form-urlencoded",
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.href = "/Genre/AllGenres"; 
+                        } else {
+                            alert("Failed to update genre.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                    }
+                });
+            });
+        });
+    </script>
 }

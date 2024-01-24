@@ -25,21 +25,39 @@ namespace MVC_LAYER.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CreateGenre(BLGenre blGenre)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid) return View(blGenre);
+
+        //        _genreRepository.Add(blGenre);
+
+        //        return RedirectToAction("AllGenres");
+        //    }
+        //    catch 
+        //    {
+        //        return RedirectToAction("AllGenres");
+        //    }
+        //}
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult CreateGenre(BLGenre blGenre)
         {
             try
             {
-                if (!ModelState.IsValid) return View(blGenre);
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, redirectUrl = Url.Action("AllGenres") });
 
                 _genreRepository.Add(blGenre);
 
-                return RedirectToAction("AllGenres");
+                return Json(new { success = true, redirectUrl = Url.Action("AllGenres") });
             }
-            catch 
+            catch (Exception ex)
             {
-                return RedirectToAction("AllGenres");
+                return Json(new { success = false, message = ex.Message });
             }
         }
 
@@ -74,21 +92,19 @@ namespace MVC_LAYER.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) return View(genre);
+                if (!ModelState.IsValid) return Json(new { success = false, redirectUrl = Url.Action("AllGenres") });
 
-                int id = genre.Id;
+                _genreRepository.Modify(genre.Id, genre);
 
-                _genreRepository.Modify(id, genre);
-
-                return RedirectToAction("AllGenres");
+                return Json(new { success = true, redirectUrl = Url.Action("AllGenres") });
             }
             catch
             {
-                return RedirectToAction("AllGenres");
+                return Json(new { success = false, message = "Failed to update genre" });
             }
         }
 
-        //nalodaj view s odabranim genreom
+
         public IActionResult DeleteGenre(int id, BLGenre genre) //fix
         {
             try
@@ -113,25 +129,26 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //obrisi ga
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpDelete]
         public IActionResult DeleteGenre(int id)
         {
             try
             {
-                if (id == 0) return NotFound();
+                if (id == 0)
+                {
+                    return NotFound();
+                }
 
                 var deletedGenre = _genreRepository.Remove(id);
 
                 if (deletedGenre == null)
                     return Json(new { success = false, message = "Unable to delete genre" });
 
-                return RedirectToAction("AllGenres");
+                return Json(new { success = true, message = "Genre deleted successfully" });
             }
-            catch
+            catch (Exception ex)
             {
-                return RedirectToAction("AllGenres");
+                return Json(new { success = false, message = ex.Message });
             }
         }
     }

@@ -1,1 +1,15 @@
-﻿
+﻿@model DATA_LAYER.BLModels.BLUser
+
+
+<h2>User Profile</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">User Details</h5>
+        <p class="card-text"><strong>Username:</strong> @Model.Username</p>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="ChangePassword">Change password</a>
+</div>

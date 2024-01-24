@@ -16,13 +16,15 @@ namespace MVC_LAYER.Controllers
         private readonly IUserRepo _userRepo;
         private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserController(ILogger<UserController> logger, IUserRepo userRepo,ICountryRepository countryRepository, IMapper mapper)
+        public UserController(ILogger<UserController> logger, IUserRepo userRepo,ICountryRepository countryRepository, IMapper mapper , IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _userRepo = userRepo;
             _mapper = mapper;
             _countryRepository = countryRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -137,5 +139,39 @@ namespace MVC_LAYER.Controllers
 
             return RedirectToAction("CardView", "Video");
         }
+
+        //[HttpGet]
+        //public IActionResult UserDetails()
+        //{
+        //    // Retrieve username from claims
+        //    string username = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+
+        //    if (username == null)
+        //    {
+        //        // Handle user not found
+        //        return NotFound();
+        //    }
+
+        //    return View(username);
+        //}
+
+        [HttpGet]
+        public IActionResult UserDetails()
+        {
+            // Retrieve username from claims
+            string username = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (username == null)
+            {
+                // Handle user not found
+                return NotFound();
+            }
+
+            // No need to call _userRepo.Get(username) here
+            var user = new BLUser { Username = username }; // You can create a BLUser object with just the username
+
+            return View(user);
+        }
+
     }
 }

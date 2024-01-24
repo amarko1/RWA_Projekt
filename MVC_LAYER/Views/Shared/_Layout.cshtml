@@ -58,8 +58,11 @@
                         {
                             <li class="nav-item ms-auto">
                                 <form asp-controller="User" asp-action="Logout" class="d-inline">
-                                    <button type="submit" class="btn btn-outline-primary">Logout @username</button>
+                                    <button type="submit" class="btn btn-outline-primary">Logout @username</button> 
                                 </form>
+                            </li>
+                            <li class="nav-item">
+                                <b><a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="UserDetails">Details</a></b> 
                             </li>
                         }
                         else 

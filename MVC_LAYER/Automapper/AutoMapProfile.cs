@@ -30,7 +30,8 @@ namespace MVC_LAYER.Automapper
                 .ReverseMap();
 
             CreateMap<User, BLUser>()
-                .ReverseMap();
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName.Trim()))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName.Trim()));
 
             CreateMap<BLUser, VMUser>();
         }
