@@ -10,100 +10,55 @@ using System.Threading.Tasks;
 
 namespace DATA_LAYER.Repositories
 {
-    public interface IImageService
+    public interface IImageRepository
     {
-        BLImage? Get(int id);
-        BLImage Create(IFormFile image);
-
-        BLImage? Update(int id, IFormFile image);
+        Task<int> AddImageAsync(BLImage image);
+        Task UpdateImageAsync(int imageId, string newImagePath);
+        Task SaveChangesAsync();
+        string GetImagePathById(int imageId);
     }
 
-    public class ImageService : IImageService
+    public class ImageRepository : IImageRepository
     {
-        private readonly RwaMoviesContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly RwaMoviesContext _context; 
 
-        public ImageService(RwaMoviesContext dbContext, IMapper mapper)
+        public ImageRepository(RwaMoviesContext context)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _context = context;
         }
 
-        private byte[]? GetFileAsMemoryStream(IFormFile file)
+        public async Task<int> AddImageAsync(BLImage blImage)
         {
-            if (file != null)
+            var image = new Image
             {
-                if (file.Length > 0)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        file.CopyTo(memoryStream);
+                Content = blImage.Content
+            };
 
-                        if (memoryStream.Length < 50 * 1024 * 1024)
-                        {
-                            return memoryStream.ToArray();
-                        }
-                    }
-                }
-            }
-
-            return null;
+            _context.Images.Add(image);
+            await _context.SaveChangesAsync();
+            return image.Id; 
         }
 
-        public BLImage Create(IFormFile image)
+        public async Task UpdateImageAsync(int imageId, string newImagePath)
         {
-            var imageAsStream = GetFileAsMemoryStream(image);
-
-            var imageForMap = _mapper.Map<Image>(image);
-
-            Image newImage = new Image();
-
-            if (imageAsStream != null)
+            var image = await _context.Images.FindAsync(imageId);
+            if (image != null)
             {
-                newImage.Content = Convert.ToBase64String(imageAsStream);
+                image.Content = newImagePath;
+                _context.Update(image);
+                await _context.SaveChangesAsync();
             }
-
-            _dbContext.Images.Add(imageForMap);
-            _dbContext.SaveChanges();
-
-            var blImages = _mapper.Map<BLImage>(imageForMap);
-
-            return blImages;
         }
 
-        public BLImage? Get(int id)
+        public async Task SaveChangesAsync()
         {
-            var requestedImage = _dbContext.Images;
-
-            if (requestedImage == null) return null;
-
-            var blImages = _mapper.Map<IEnumerable<BLImage>>(requestedImage);
-
-            return blImages.FirstOrDefault(x => x.Id == id);
+            await _context.SaveChangesAsync();
         }
 
-        public BLImage? Update(int id, IFormFile image)
+        public string GetImagePathById(int imageId)
         {
-            var imageForUpdate = _dbContext.Images.FirstOrDefault(i => i.Id == id);
-
-            if (imageForUpdate == null) return null;
-
-            var imageAsStream = GetFileAsMemoryStream(image);
-
-            if (imageAsStream != null)
-            {
-                imageForUpdate.Content = Convert.ToBase64String(imageAsStream);
-            }
-
-            //_mapper.Map(image, imageForUpdate);
-
-            _dbContext.Update(imageForUpdate);
-
-            _dbContext.SaveChanges();
-
-            var blCountries = _mapper.Map<BLImage>(imageForUpdate);
-
-            return blCountries;
+            var image = _context.Images.FirstOrDefault(img => img.Id == imageId);
+            return image?.Content; 
         }
     }
 }

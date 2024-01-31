@@ -25,7 +25,13 @@
     @foreach (var item in Model)
     {
         <div class="card" style="width:20em;margin:10px;">
-            <img src="@item.imageid" class="card-img-top"/>
+           @{
+            
+            var imageUrl = !string.IsNullOrEmpty(item.ImagePath) 
+                           ? Url.Content("~/images/" + item.ImagePath)
+                           : Url.Content("~/images/default.jpg");
+           }
+        <img src="@imageUrl" alt="Video Image" class="card-img-top"/>
             <div class="card-body">
                 <div class="card-title">
                     <h2>@item.Name</h2>

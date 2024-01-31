@@ -1,4 +1,5 @@
 ﻿using DATA_LAYER.DALModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,11 @@ namespace DATA_LAYER.BLModels
         [Display(Name = "Streaming Url")]
         public string? StreamingUrl { get; set; }
 
-        public int? imageid { get; set; }
+        public int? ImageId { get; set; }
+
+        [Display(Name = "Video Image")]
+        public IFormFile? VideoImage { get; set; }
+
+        public string? ImagePath { get; set; }
     }
 }

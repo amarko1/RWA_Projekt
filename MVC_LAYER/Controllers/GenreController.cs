@@ -44,16 +44,15 @@ namespace MVC_LAYER.Controllers
         //}
 
         [HttpPost]
-        public IActionResult CreateGenre(BLGenre blGenre)
+        public IActionResult CreateGenre([FromBody] BLGenre blGenre)
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return Json(new { success = false, redirectUrl = Url.Action("AllGenres") });
+                if (!ModelState.IsValid) return View(blGenre);
 
                 _genreRepository.Add(blGenre);
 
-                return Json(new { success = true, redirectUrl = Url.Action("AllGenres") });
+                return RedirectToAction("AllGenres");
             }
             catch (Exception ex)
             {
