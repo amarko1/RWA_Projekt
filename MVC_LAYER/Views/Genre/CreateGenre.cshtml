@@ -3,35 +3,6 @@
 @{
     ViewData["Title"] = "Create Genre";
 }
-@*
-<h1>Create</h1>
-
-<h4>Genre</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateGenre">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="AllGenres">Back to List</a>
-</div>*@
 
 <h1>Create</h1>
 
@@ -64,29 +35,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-@*@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script>
-        $(document).ready(function () {
-            $("#createGenreBtn").click(function () {
-                $.ajax({
-                    url: "/Genre/CreateGenre", // putanja do vaše akcije u kontroleru
-                    type: "POST",
-                    data: $("#createGenreForm").serialize(),
-                    contentType: "application/x-www-form-urlencoded",
-                    success: function (result) {
-                        if (result.success) {
-                            window.location.href = result.redirectUrl; // Redirect to the specified URL
-                        } else {
-                            alert("Failed to create genre.");
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-}*@
 
 @section Scripts{
     @{

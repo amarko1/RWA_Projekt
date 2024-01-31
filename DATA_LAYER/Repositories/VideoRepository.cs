@@ -53,13 +53,11 @@ namespace DATA_LAYER.Repositories
 
         public BLVideo Add(BLVideo value)
         {
-            // map BLVideo to Video
             var dbVideo = _mapper.Map<Video>(value);
 
             _dbContext.Videos.Add(dbVideo);
             _dbContext.SaveChanges();
 
-            // map the new Video back to BLVideo
             var blVideo = _mapper.Map<BLVideo>(dbVideo);
 
             return blVideo;
@@ -84,18 +82,14 @@ namespace DATA_LAYER.Repositories
 
         public BLVideo Remove(int id)
         {
-            // find the existing Video entity in the database
             var dbVideo = _dbContext.Videos.FirstOrDefault(x => x.Id == id);
             if (dbVideo == null)
                 return null;
 
-            // remove the Video entity from the database
             _dbContext.Videos.Remove(dbVideo);
 
-            // save changes to the database
             _dbContext.SaveChanges();
 
-            // map the removed Video to a BLVideo object
             var blVideo = _mapper.Map<BLVideo>(dbVideo);
 
             return blVideo;

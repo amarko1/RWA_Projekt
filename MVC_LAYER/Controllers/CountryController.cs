@@ -130,7 +130,6 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //nalodaj view s odabranim genreom
         public IActionResult DeleteCountry(int id, BLCountry country) //fix
         {
             try
@@ -155,7 +154,6 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //obrisi ga
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCountry(int id)

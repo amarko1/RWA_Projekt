@@ -11,11 +11,9 @@ namespace MVC_LAYER.Automapper
         {
             CreateMap<BLTag, Tag>();
             CreateMap<Tag, BLTag>();
-            //CreateMap<BLTag, Tag>().ForMember(dest => dest.Id, opt => opt.Ignore()); // ignore the Id property when mapping
 
             CreateMap<BLGenre, Genre>();
             CreateMap<Genre, BLGenre>();
-            //CreateMap<BLGenre, Genre>().ForMember(dest => dest.Id, opt => opt.Ignore()); // ignore the Id property when mapping
 
             //CreateMap<BLVideo, Video>();
             //CreateMap<Video, BLVideo>();

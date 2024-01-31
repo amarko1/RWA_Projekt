@@ -140,35 +140,17 @@ namespace MVC_LAYER.Controllers
             return RedirectToAction("CardView", "Video");
         }
 
-        //[HttpGet]
-        //public IActionResult UserDetails()
-        //{
-        //    // Retrieve username from claims
-        //    string username = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
-
-        //    if (username == null)
-        //    {
-        //        // Handle user not found
-        //        return NotFound();
-        //    }
-
-        //    return View(username);
-        //}
-
         [HttpGet]
         public IActionResult UserDetails()
         {
-            // Retrieve username from claims
             string username = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
 
             if (username == null)
             {
-                // Handle user not found
                 return NotFound();
             }
-
-            // No need to call _userRepo.Get(username) here
-            var user = new BLUser { Username = username }; // You can create a BLUser object with just the username
+            
+            var user = new BLUser { Username = username }; 
 
             return View(user);
         }

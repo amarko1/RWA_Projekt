@@ -89,7 +89,6 @@ namespace WEB_API.Controllers
         {
             var videos = _videoRepository.GetAll();
 
-            // Ordering
             if (string.Compare(orderBy, "id", true) == 0)
             {
                 videos.OrderBy(x => x.Id);
@@ -104,7 +103,6 @@ namespace WEB_API.Controllers
             }
             else
             {
-                // default: order by Id
                 videos.OrderBy(x => x.Id);
             }
 

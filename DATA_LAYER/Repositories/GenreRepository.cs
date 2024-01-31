@@ -50,13 +50,11 @@ namespace DATA_LAYER.Repositories
 
         public BLGenre Add(BLGenre value)
         {
-            // map BLGenre to Genre
             var dbGenre = _mapper.Map<Genre>(value);
 
             _dbContext.Genres.Add(dbGenre);
             _dbContext.SaveChanges();
 
-            // map the new Genre back to BLGenre
             var blGenre = _mapper.Map<BLGenre>(dbGenre);
 
             return blGenre;
@@ -64,20 +62,16 @@ namespace DATA_LAYER.Repositories
 
         public BLGenre Modify(int id, BLGenre value)
         {
-            // find the existing Genre entity in the database
             var dbGenre = _dbContext.Genres.FirstOrDefault(x => x.Id == id);
             if (dbGenre == null)
                 return null;
 
-            // update the entity using the data from the BLGenre object
             _mapper.Map(value, dbGenre);
 
             _dbContext.Update(dbGenre);
 
-            // save changes to the database
             _dbContext.SaveChanges();
 
-            // map the updated Genre back to a BLGenre object
             var blGenre = _mapper.Map<BLGenre>(dbGenre);
 
             return blGenre;
@@ -85,18 +79,14 @@ namespace DATA_LAYER.Repositories
 
         public BLGenre Remove(int id)
         {
-            // find the existing Genre entity in the database
             var dbGenre = _dbContext.Genres.FirstOrDefault(x => x.Id == id);
             if (dbGenre == null)
                 return null;
 
-            // remove Genre from the database
             _dbContext.Genres.Remove(dbGenre);
 
-            // save to the database
             _dbContext.SaveChanges();
 
-            // map the removed Genre to a BLGenre object
             var blGenre = _mapper.Map<BLGenre>(dbGenre);
 
             return blGenre;

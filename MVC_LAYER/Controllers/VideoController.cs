@@ -74,8 +74,10 @@ namespace MVC_LAYER.Controllers
             ViewBag.SearchTextCardView = searchText;
 
             var allVideos = _videoRepository.SearchCardView(searchText);
+
             var videoModels = allVideos.Select(video => new BLVideo
             {
+                Id = video.Id,
                 Name = video.Name,
                 Description = video.Description,
                 GenreId = video.GenreId,
@@ -151,94 +153,26 @@ namespace MVC_LAYER.Controllers
             ViewBag.GenreSelectList = new SelectList(selectListItems, "Value", "Text");
         }
 
-        //[HttpPost]
-        //public IActionResult CreateVideo(BLVideo blVideo)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            // Log ModelState errors
-        //            foreach (var modelState in ModelState.Values)
-        //            {
-        //                foreach (var error in modelState.Errors)
-        //                {
-        //                    var errorMessage = error.ErrorMessage;
-        //                    Debug.WriteLine($"Validation Error: {errorMessage}");
-        //                }
-        //            }
-        //            return View(blVideo);   
-        //        }
-
-        //        _videoRepository.Add(blVideo);
-
-        //        return RedirectToAction("Search");
-        //    }
-        //    catch
-        //    {
-        //        return RedirectToAction("Search");
-        //    }
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> CreateVideo(BLVideo blVideo)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            // ... handle invalid model ...
-        //            return View(blVideo);
-        //        }
-
-        //        // Handle the file upload
-        //        if (blVideo.VideoImage != null)
-        //        {
-        //            var folderPath = Path.Combine(_hostingEnvironment.WebRootPath, "images");
-        //            Directory.CreateDirectory(folderPath); // Ensure the directory exists
-
-        //            var uniqueFileName = Guid.NewGuid().ToString() + "_" + blVideo.VideoImage.FileName;
-        //            var filePath = Path.Combine(folderPath, uniqueFileName);
-
-        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                await blVideo.VideoImage.CopyToAsync(fileStream);
-        //            }
-
-        //            blVideo.ImagePath = uniqueFileName; // Save this path to the database
-        //        }
-
-        //        _videoRepository.Add(blVideo);
-
-        //        return RedirectToAction("Search");
-        //    }
-        //    catch
-        //    {
-        //        return RedirectToAction("Search");
-        //    }
-        //}
-
         [HttpPost]
         public async Task<IActionResult> CreateVideo(BLVideo blVideo)
         {
             if (ModelState.IsValid)
             {
-                int? imageId = null; // Bit će null ako nema slike
+                int? imageId = null; 
 
-                // Provjerite da li postoji učitana slika
+                
                 if (blVideo.VideoImage != null)
                 {
-                    // Spremite sliku i dobijte putanju
+                    // save image and get path
                     var imagePath = await SaveImage(blVideo.VideoImage);
 
-                    // Stvorite BLImage instancu
+                    
                     var blImage = new BLImage { Content = imagePath };
 
-                    // Spremite BLImage i dobijte ID
+                    // save and get id
                     imageId = await _imageRepository.AddImageAsync(blImage);
                 }
 
-                // Sada kada imate imageId, možete stvoriti i sačuvati video zapis
-                // Pretpostavimo da imate neku metodu AddVideoAsync unutar video repozitorija
                 var blVideoEntity = new BLVideo
                 {
                     Name = blVideo.Name,
@@ -246,7 +180,7 @@ namespace MVC_LAYER.Controllers
                     GenreId = blVideo.GenreId,
                     TotalSeconds = blVideo.TotalSeconds,
                     StreamingUrl = blVideo.StreamingUrl,
-                    ImageId = imageId // Postavite ID slike ako je slika učitana
+                    ImageId = imageId 
                 };
 
                  _videoRepository.Add(blVideoEntity);
@@ -254,7 +188,6 @@ namespace MVC_LAYER.Controllers
                 return RedirectToAction("Search");
             }
 
-            // Ako model nije valjan, prikažite formu ponovo s greškama
             return View(blVideo);
         }
 
@@ -270,21 +203,6 @@ namespace MVC_LAYER.Controllers
 
             return filePath;
         }
-
-        //private async Task<int> SaveImageRecord(string imagePath)
-        //{
-        //    // Ovdje stvarate novi zapis u tablici 'Image' s putanjom do slike
-        //    var imageRecord = new BLImage // Pretpostavljam da imate model koji odgovara vašoj tablici 'Image'
-        //    {
-        //        Content = Path.GetFileName(imagePath) // Spremite samo ime datoteke ako želite
-        //    };
-
-        //    await _imageRepository.AddImageAsync(imageRecord); // Pretpostavljam da repozitorij ima metodu 'Add'
-        //    await _imageRepository.SaveChangesAsync(); // Spremite promjene u bazi podataka
-
-        //    return imageRecord.Id; // Vratite ID novog zapisa
-        //}
-
 
         public IActionResult EditVideo(int id)
         {
@@ -310,26 +228,6 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult EditVideo(BLVideo video)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid) return View(video);
-
-        //        int id = video.Id;
-
-        //        _videoRepository.Modify(id, video);
-
-        //        return RedirectToAction("Search");
-        //    }
-        //    catch
-        //    {
-        //        return RedirectToAction("Search");
-        //    }
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditVideo(BLVideo blVideo, IFormFile? videoImage)
@@ -338,35 +236,28 @@ namespace MVC_LAYER.Controllers
             {
                 if (!ModelState.IsValid) return View(blVideo);
 
-                // Initialize imageId with the current image ID of the video
                 int? imageId = blVideo.ImageId;
 
-                // Check if a new image was uploaded
                 if (videoImage != null && videoImage.Length > 0)
                 {
-                    // Save the new image and get its path
                     var imagePath = await SaveImage(videoImage);
 
-                    // Create BLImage instance
                     var blImage = new BLImage { Content = imagePath };
 
-                    // Save BLImage and get ID
                     imageId = await _imageRepository.AddImageAsync(blImage);
                 }
 
-                // Get the current video from the repository (to update it)
+                // Get the  video for update
                 var videoToUpdate =  _videoRepository.Get(blVideo.Id);
                 if (videoToUpdate != null)
                 {
-                    // Update video details
                     videoToUpdate.Name = blVideo.Name;
                     videoToUpdate.Description = blVideo.Description;
                     videoToUpdate.GenreId = blVideo.GenreId;
                     videoToUpdate.TotalSeconds = blVideo.TotalSeconds;
                     videoToUpdate.StreamingUrl = blVideo.StreamingUrl;
-                    videoToUpdate.ImageId = imageId; // Set to the new imageId if a new image was uploaded, else remains the same
+                    videoToUpdate.ImageId = imageId; 
 
-                    // Update the video record in the repository
                     _videoRepository.Modify(videoToUpdate.Id, videoToUpdate);
                 }
 
@@ -374,12 +265,10 @@ namespace MVC_LAYER.Controllers
             }
             catch
             {
-                // Return to the edit view if something goes wrong
-                return View(blVideo);
+                return View("Search");
             }
         }
 
-        //nalodaj view s odabranim videom
         public IActionResult DeleteVideo(int id, BLGenre genre) //fix
         {
             try
@@ -404,7 +293,6 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //obrisi ga
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteVideo(int id)

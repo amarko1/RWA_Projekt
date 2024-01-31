@@ -88,7 +88,6 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //nalodaj view s odabranim tagom
         public IActionResult DeleteTag(int id, BLTag tag) //fix
         {
             try
@@ -113,7 +112,6 @@ namespace MVC_LAYER.Controllers
             }
         }
 
-        //obrisi ga
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteTag(int id)

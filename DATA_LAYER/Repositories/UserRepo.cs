@@ -35,10 +35,8 @@ namespace DATA_LAYER.Repositories
 
         public IEnumerable<BLUser> GetAll()
         {
-            // First retrieve collection from database
             var dbUsers = _dbContext.Users;
 
-            // Then Map it to BL model collection using IMapper
             var blUsers = _mapper.Map<IEnumerable<BLUser>>(dbUsers);
 
             return blUsers;
@@ -50,7 +48,6 @@ namespace DATA_LAYER.Repositories
             var b64Hash = CreateHash(password, salt);
             var b64SecToken = GenerateSecurityToken();
 
-            // Create BLUser object
             var dbUser = new User()
             {
                 CreatedAt = DateTime.UtcNow,
